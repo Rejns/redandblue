@@ -27,5 +27,6 @@ require(["socketio","jquery","board"], function(io, jq, board) {
 		if(board.color !== data.winner)
 			board.fillColor(data.fill);
 		board.showWinner(data.winner+" wins");
+		board.animateSolution(data.solution);
 	});
 });

@@ -36,6 +36,19 @@ define(["htmlGenerator"], function(hg){
 		},1000);
 	}
 
+	function delay(coords, i) {
+		setTimeout(function() {
+			var el = document.getElementById(coords[i]);
+			el.style.backgroundColor = "yellow";
+		},i*1000);
+	}
+
+	function animateSolution(coords) {
+		for(var i = 0; i < coords.length; i++) {
+			delay(coords, i);
+		}
+	}
+
 	return {
 		color:null,
 		data: null,
@@ -58,6 +71,7 @@ define(["htmlGenerator"], function(hg){
 			this.color = color;
 			this.data = null;
 		},
+		animateSolution: animateSolution,
 		addClickListener: addClickListener,
 		removeEventListener: removeEventListener
 	};

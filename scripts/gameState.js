@@ -166,6 +166,10 @@ define(function() {
 			else 
 				return false;
 		},
+		getSolution: function() {
+			var solution = checkForSolution(concatArrays(10, 10, this.data), this.currentColor);
+			return solution;
+		},
 		changeColor: function() {
 		if(this.currentColor === "red")
 			this.currentColor = "blue";

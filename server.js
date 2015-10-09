@@ -37,7 +37,8 @@ requirejs(["gameState"],function(gameState){
 				gameState.data[parseInt(data.position[0])][parseInt(data.position[1])] = socket.color;
 				if(gameState.solution()) {
 					console.log(socket.color+" wins");
-					io.emit("showWinner", { winner: socket.color, fill: data.position});
+					var solution = gameState.getSolution();
+					io.emit("showWinner", { winner: socket.color, fill: data.position, solution: solution });
 				}
 				else {
 					gameState.changeColor();
