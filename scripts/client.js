@@ -7,25 +7,27 @@ require.config({
 });
 
 require(["socketio","jquery","board"], function(io, jq, board) {
-	var socket = io.connect("http://localhost:8080");
+	
+	board.init(10, 10);
+	var socket = io.connect("http://localhost:3000");
 
-	socket.on("setColor",function(data){
-		board.init(10,10, data.color);
+	socket.on("waitPlayer", function() {
+		$('#message').html("waiting for another player ...");
 	});
+
 	socket.on("turn", function(data){
-		if(board.color === data.turn) {	
-			board.fillColor(data.fill);
-			board.addClickListener();
-			board.countDown(10, function() {
-				socket.emit("endturn", { position: board.data });
-				board.removeEventListener();
-				board.data = null;
-			});
-		}
+		$('#message').hide();
+		board.fillColor(data.opponent.position, data.opponent.color);
+		console.log(data);
+		board.addClickListener(data.clientColor); //pass in color of current client (red or blue)
+		board.countDown(10, function() { //function checks if data is set within 10 seconds and sends null otherwise
+			socket.emit("endturn", { position: board.data, color: data.clientColor });
+			board.removeEventListener();
+			board.data = null; //reset data for next turn
+		});
 	});
 	socket.on("showWinner", function(data) {
-		if(board.color !== data.winner)
-			board.fillColor(data.fill);
+		board.fillColor(data.fill);
 		board.showWinner(data.winner+" wins");
 		board.animateSolution(data.solution);
 	});

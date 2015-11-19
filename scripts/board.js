@@ -1,20 +1,20 @@
 define(["htmlGenerator"], function(hg){
 	
-	var handler = function(self, el) {
+	var handler = function(self, el, color) {
 		var self = self;
 		return function() {
 			if(!el.taken) {
 				self.data = el.id;
-				el.style.backgroundColor = self.color;
+				el.style.backgroundColor = color;
 				el.taken = true;
 			}
 		};
 	}
 
-	var addClickListener = function() {
+	var addClickListener = function(color) {
 		var fields = document.getElementsByClassName("field");
 		for(var i = 0; i < fields.length; i++) {
-			fields[i].onclick = handler(this, fields[i]);
+			fields[i].onclick = handler(this, fields[i], color);
 		}
 	}
 
@@ -50,25 +50,21 @@ define(["htmlGenerator"], function(hg){
 	}
 
 	return {
-		color:null,
 		data: null,
 		countDown: countDown,
 		showWinner: function(winner) {
 			document.getElementById("winner").innerHTML = winner;
 		},
-		fillColor: function(position) {
+		fillColor: function(position, color) {
 			if(position !== null) {
 				el = document.getElementById(position);
 				el.taken = true;
-				if(this.color === "red")
-					el.style.backgroundColor = "blue";
-				else
-					el.style.backgroundColor = "red";
+				el.style.backgroundColor = color;
 			}
 		},
-		init: function(x, y, color) {
+		init: function(x, y) {
+			console.log(document.getElementsByClassName('container')[0]);
 			document.getElementsByClassName('container')[0].innerHTML = hg.table(x, y);
-			this.color = color;
 			this.data = null;
 		},
 		animateSolution: animateSolution,
