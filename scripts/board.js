@@ -18,7 +18,8 @@ define(["htmlGenerator"], function(hg){
 		}
 	}
 
-	var removeEventListener = function() {
+
+	var removeClickListener = function() {
 		var fields = document.getElementsByClassName("field");
 		for(var i = 0; i < fields.length; i++) {
 			fields[i].onclick = null;
@@ -29,7 +30,7 @@ define(["htmlGenerator"], function(hg){
 		var self = this;
 		var intervalId = setInterval(function(){
 			document.getElementById("counter").innerHTML = i;
-			if(self.data != null)
+			if(self.data !== null || self.wait || self.restart)
 				clearInterval(intervalId, callback());
 			else
 			i-- || clearInterval(intervalId, callback());
@@ -53,7 +54,10 @@ define(["htmlGenerator"], function(hg){
 		data: null,
 		countDown: countDown,
 		showWinner: function(winner) {
-			document.getElementById("winner").innerHTML = winner;
+			document.getElementById("message").innerHTML = winner;
+		},
+		hideWinner: function() {
+			document.getElementById("message").innerHTML = "";
 		},
 		fillColor: function(position, color) {
 			if(position !== null) {
@@ -62,13 +66,22 @@ define(["htmlGenerator"], function(hg){
 				el.style.backgroundColor = color;
 			}
 		},
+		reset: function() {
+			var fields = document.getElementsByClassName("field");
+			for(var i = 0; i < fields.length; i++) {
+				fields[i].style.backgroundColor = "white";
+				fields[i].taken = false;
+			}
+		},
 		init: function(x, y) {
-			console.log(document.getElementsByClassName('container')[0]);
 			document.getElementsByClassName('container')[0].innerHTML = hg.table(x, y);
 			this.data = null;
 		},
+		hideCounter: function() {
+			document.getElementById('counter').innerHTML = "";
+		},
 		animateSolution: animateSolution,
 		addClickListener: addClickListener,
-		removeEventListener: removeEventListener
+		removeClickListener: removeClickListener
 	};
 })
