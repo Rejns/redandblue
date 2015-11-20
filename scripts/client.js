@@ -50,9 +50,14 @@ require(["socketio","jquery","board"], function(io, jq, board) {
 		});
 	});
 	socket.on("showWinner", function(data) {
+		$('#restart').unbind('click');
 		board.fillColor(data.fill);
 		board.showWinner(data.winner+" wins");
-		board.animateSolution(data.solution);
+		board.animateSolution(data.solution, function() {
+			$('#restart').on('click', function() {
+				socket.emit("restart");
+			});
+		});
 	});
 });
 

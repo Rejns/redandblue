@@ -37,16 +37,19 @@ define(["htmlGenerator"], function(hg){
 		},1000);
 	}
 
-	function delay(coords, i) {
+	function delay(coords, i, callback) {
 		setTimeout(function() {
 			var el = document.getElementById(coords[i]);
 			el.style.backgroundColor = "yellow";
+			if(i === 4 - 1) {
+				callback();
+			}
 		},i*1000);
 	}
 
-	function animateSolution(coords) {
+	function animateSolution(coords, callback) {
 		for(var i = 0; i < coords.length; i++) {
-			delay(coords, i);
+			delay(coords, i, callback);
 		}
 	}
 

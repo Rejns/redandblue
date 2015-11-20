@@ -20,6 +20,8 @@ function checkForSolution(lines, currentColor) {
 				newLocation = [];
 			}
 		}
+		counter = 0;
+		newLocation = [];
 	}
 	return newLocation;
 }
