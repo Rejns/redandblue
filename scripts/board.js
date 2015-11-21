@@ -30,7 +30,7 @@ define(["htmlGenerator"], function(hg){
 		var self = this;
 		var intervalId = setInterval(function(){
 			document.getElementById("counter").innerHTML = i;
-			if(self.data !== null || self.wait || self.restart)
+			if(self.data !== null || self.wait || self.restart || self.winner)
 				clearInterval(intervalId, callback());
 			else
 			i-- || clearInterval(intervalId, callback());
