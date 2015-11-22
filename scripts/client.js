@@ -43,13 +43,14 @@ require(["socketio","jquery","board"], function(io, jq, board) {
 	});
 
 	socket.on("turn", function(data){
+		console.log(data);
 		board.winner = false;
 		board.restart = false;
 		board.wait = false;
 		board.fillColor(data.opponent.position, data.opponent.color);
 		board.addClickListener(data.clientColor); //pass in color of current client (red or blue)
 		board.countDown(10, function() { //function checks if data is set within 10 seconds and sends null otherwise
-			socket.emit("endturn", { position: board.data, color: data.clientColor });
+			socket.emit("endturn", { position: board.data, color: data.clientColor, stateId : data.stateId });
 			board.removeClickListener();
 			board.data = null; //reset data for next turn
 			board.hideCounter();

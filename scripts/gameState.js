@@ -161,6 +161,7 @@
 		this.socket1 = null;
 		this.socket2 = null;
 		this.lastStarted = 1;
+		this.stateId = 0;
 	}
 
 	GameState.prototype.isFree = function() {
@@ -170,9 +171,27 @@
 	}
 
 	GameState.prototype.addPlayer = function(socket) {
-		if(this.socket1 === null) {
-			this.socket1 = socket;
-			if(this.socket2 === null) {
+		
+		var gameState = this;
+		var socket1 = this.socket1;
+		var socket2 = this.socket2;
+
+		if(socket1 === null) {
+			socket1 = socket;
+			this.socket1 = socket1;
+			socket1.on("endturn", function(data) {
+				if(gameState.restartMode) {
+					GameState.restart(gameState);
+					GameState.sendFirstTurn(gameState);
+				}
+				else 
+					GameState.processEndTurn(gameState, socket1, data); //process incoming data and respond appropriately
+			});
+			socket1.on("restart", function() {
+				GameState.handleRestartReq(gameState);
+			});
+
+			if(socket2 === null) {
 				this.data = GameState.resetData();
 				socket.emit("waitPlayer", { message: "Waiting for another player ..." });
 			}
@@ -180,9 +199,21 @@
 				this.ready = true;
 		}
 		else {
-			this.socket2 = socket;
+			socket2 = socket;
+			this.socket2 = socket2;
+			socket2.on("endturn", function(data) {
+				if(gameState.restartMode) {
+					GameState.restart(gameState);
+					GameState.sendFirstTurn(gameState);
+				}
+				else 
+					GameState.processEndTurn(gameState, socket2, data);
+			});
+			socket2.on("restart", function() {
+				GameState.handleRestartReq(gameState);
+			});
 			this.data = GameState.resetData();
-			if(this.socket1 === null) {
+			if(socket1 === null) {
 				this.data = GameState.resetData();
 				socket.emit("waitPlayer", { message: "Waiting for another player ..." });
 			}
@@ -196,37 +227,11 @@
 		this.restartMode = false;
 		this.started = true;
 		this.timedOut = false;
-	    var socket1 = this.socket1;
-		var socket2 = this.socket2;
 		var gameState = this;
+		this.stateId++;
 		
 		GameState.setColors(gameState); //call helper function to initialize color for each socket
 		GameState.sendFirstTurn(gameState); 
-
-		socket1.on("endturn", function(data) {
-			if(gameState.restartMode) {
-				GameState.restart(gameState);
-				GameState.sendFirstTurn(gameState);
-			}
-			else 
-				GameState.processEndTurn(gameState, socket1, data); //process incoming data and respond appropriately
-		});
-
-		socket2.on("endturn", function(data) {
-			if(gameState.restartMode) {
-				GameState.restart(gameState);
-				GameState.sendFirstTurn(gameState);
-			}
-			else 	
-				GameState.processEndTurn(gameState, socket2, data);
-		});
-
-		socket1.on("restart", function() {
-			GameState.handleRestartReq(gameState);
-		});
-		socket2.on("restart", function() {
-			GameState.handleRestartReq(gameState);
-		});
 	}
 
 	//helpers
@@ -265,9 +270,9 @@
 				}
 				else {
 					if(socket.id === gameState.socket2.id)
-						gameState.socket1.emit("turn", { clientColor: gameState.socket1.color, opponent : { position: data.position, color: data.color }} );
+						gameState.socket1.emit("turn", { clientColor: gameState.socket1.color, opponent : { position: data.position, color: data.color }, stateId : gameState.stateId} );
 					else
-						gameState.socket2.emit("turn", { clientColor: gameState.socket2.color, opponent : { position: data.position, color: data.color }} );
+						gameState.socket2.emit("turn", { clientColor: gameState.socket2.color, opponent : { position: data.position, color: data.color }, stateId : gameState.stateId} );
 				}
 			}
 		}
@@ -278,9 +283,9 @@
 		gameState.socket1.emit("gameStarted", { message: "Game running ..."});
 		gameState.socket2.emit("gameStarted", { message: "Game running ..."});
 		if(gameState.lastStarted === 1)
-			gameState.socket1.emit("turn", { clientColor: gameState.socket1.color, opponent : { position: null, color: null }} );
+			gameState.socket1.emit("turn", { clientColor: gameState.socket1.color, opponent : { position: null, color: null }, stateId : gameState.stateId} );
 		else
-			gameState.socket2.emit("turn", { clientColor: gameState.socket2.color, opponent : { position: null, color: null }} );
+			gameState.socket2.emit("turn", { clientColor: gameState.socket2.color, opponent : { position: null, color: null }, stateId : gameState.stateId} );
 	}
 
 	GameState.restart = function(state) {
@@ -292,6 +297,7 @@
 		state.lastStarted = lastStarted;
 		state.restartMode = false;
 		state.timedOut = false;
+		state.stateId++;
 	}
 
 	GameState.allFieldsTaken = function(state) {
