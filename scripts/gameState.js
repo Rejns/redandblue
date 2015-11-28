@@ -258,8 +258,8 @@
 		if(gameState.started){
 			if(data.position === null){
 				gameState.timedOut = true;
-				gameState.socket1.emit("timedOut", { message : socket.color+" lost to timebank"} ); //send the color of timed out socket
-				gameState.socket2.emit("timedOut", { message : socket.color+" lost to timebank"} );
+				gameState.socket1.emit("timedOut", { message : socket.color+" has lost to timebank"} ); //send the color of timed out socket
+				gameState.socket2.emit("timedOut", { message : socket.color+" has lost to timebank"} );
 			}
 			else {
 				gameState.data[parseInt(data.position[0])][parseInt(data.position[1])] = data.color;
