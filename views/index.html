@@ -3,6 +3,8 @@
 <head>
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
+<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
 </head>
 <body>
 <div class="container">
@@ -12,13 +14,28 @@
 		<div id="winner"></div>
 		<div class="board"></div>
 		<div class="bottom clearfix" >
-			<button class="btn btn-default" id="restart">Restart</button>
+			<span id="restart" class="glyphicon glyphicon-refresh game-button" ></span>
+			<span class="glyphicon glyphicon-info-sign game-button" data-toggle="modal" data-target="#info"></span> 
 			<div id="counter" class="digital"></div>
 		</div>
 	</div>
+	<div class="modal fade" id="info" role="dialog">
+		<div class="modal-dialog">
+	     	<div class="modal-content">
+		        <div class="modal-header">
+		        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+		        	<h4 class="modal-title">Info / Rules</h4>
+		        </div>
+		        <div class="modal-body">
+		          <p>Game starts automatically when two players are connected. It is played in turns for 10 seconds. The timer shows up in the bottom right corner when current player has turn. Player wins if he assembles diagonal, vertical or horizontal line of legth 4 and same color. Players can switch colors by clicking the 'Switch' button.</p>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+	        </div>
+		</div>
+	</div>
 </div>
-
-
 <script data-main="scripts/client" src="scripts/require.js"></script>
 </body>
 </html>

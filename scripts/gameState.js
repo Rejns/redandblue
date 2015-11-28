@@ -303,7 +303,7 @@
 	GameState.allFieldsTaken = function(state) {
 		for(var i = 0; i < 10; i++) {
 			for(var j = 0; j < 10; j++) {
-				if(state.data[i][j] !== "red" || state.data[i][j] !== "blue")
+				if(state.data[i][j] !== "Red" || state.data[i][j] !== "Blue")
 					return false;
 			}
 		}
@@ -327,8 +327,8 @@
 	}
 
 	GameState.setColors = function(state) {
-		state.socket1.color = "red";
-	    state.socket2.color = "blue";
+		state.socket1.color = "Red";
+	    state.socket2.color = "Blue";
 	}
 
 	module.exports = GameState;
