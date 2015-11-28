@@ -11,11 +11,15 @@ app.get('/', function (req, res) {
 app.use(express.static(__dirname));
 
 io.on('connection', function(socket) {
+
+
+	console.log("connected")
 	gamesControl.findFreeGame(socket);
 	gamesControl.startReadyGames();
 	socket.on('disconnect', function() {
+		console.log("disconnected");
 		gamesControl.removePlayerFromGame(socket.id);
-	})
+	});
 });
 
 server.listen(3000, function() {

@@ -1,11 +1,69 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	height:100%;
+	width:100%;
+}
+
 .board tr td {
 	table-layout: fixed;
-	border:1px solid black;
+	border:1px solid #ccc;
+	padding:5px;
 }
 
 .field {
-	height:50px;
-	width:50px;
+	height:25px;
+	width:25px;
 	background-color: white;
+	border-radius: 50%;
+	transition:background-color 0.5s ease-in;
+}
+
+#restart {
+	margin-top: 20px;
+	float:left;
+}
+
+@font-face {
+    font-family: digital;
+    src: url(digital-7.ttf) format('truetype');
+}
+
+.digital {
+    font-family: digital;
+}
+
+#counter {
+	font-size: 200%;
+	float:right;
+	margin-top: 13px;
+}
+
+.container {
+	height:100%;
+}
+
+#message {
+	height: 20px;
+	margin-bottom:10px;
+}
+
+.wrapper {
+	border-radius: 4px;
+	width: 421px;
+	margin-left:auto;
+	margin-right:auto;
+	padding:30px;
+	border:1px solid rgba(0, 0, 0, 0.4);
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
 }
 

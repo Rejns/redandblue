@@ -2,13 +2,21 @@
 <html>
 <head>
 <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body>
-<div id="message" hidden>Waiting for another player ...</div>
-<div id="counter"></div>
-<div id="winner"></div>
-<button id="restart">Restart</button>
-<div class="container"></div>
+<div class="container">
+	<div class="wrapper">
+		<label for="message"> Status: </label>
+		<div id="message" >Waiting for another player ...</div>
+		<div id="winner"></div>
+		<div class="board"></div>
+		<div class="bottom clearfix" >
+			<button class="btn btn-default" id="restart">Restart</button>
+			<div id="counter" class="digital"></div>
+		</div>
+	</div>
+</div>
 
 
 <script data-main="scripts/client" src="scripts/require.js"></script>

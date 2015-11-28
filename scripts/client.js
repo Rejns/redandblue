@@ -9,6 +9,7 @@ require.config({
 require(["socketio","jquery","board"], function(io, jq, board) {
 	
 	board.init(10, 10);
+	setTimeout(function() {
 	var socket = io.connect("http://localhost:3000");
 
 	socket.on("waitPlayer", function(data) {
@@ -43,7 +44,6 @@ require(["socketio","jquery","board"], function(io, jq, board) {
 	});
 
 	socket.on("turn", function(data){
-		console.log(data);
 		board.winner = false;
 		board.restart = false;
 		board.wait = false;
@@ -67,5 +67,6 @@ require(["socketio","jquery","board"], function(io, jq, board) {
 			});
 		});
 	});
+},1000);
 });
 

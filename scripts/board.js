@@ -77,7 +77,7 @@ define(["htmlGenerator"], function(hg){
 			}
 		},
 		init: function(x, y) {
-			document.getElementsByClassName('container')[0].innerHTML = hg.table(x, y);
+			document.getElementsByClassName('board')[0].innerHTML = hg.table(x, y);
 			this.data = null;
 		},
 		hideCounter: function() {
