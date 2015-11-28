@@ -71,6 +71,7 @@ html, body {
 }
 
 .wrapper {
+	box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.3);
 	border-radius: 4px;
 	width: 421px;
 	margin-left:auto;
